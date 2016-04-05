@@ -9,6 +9,15 @@ public class VideoData {
 	private String fileName;
 	
 	private String lastUpdated;
+	
+	public VideoData() {
+	}
+	
+	public VideoData(String userName, String fileName, String lastUpdated) {
+		this.userName = userName;
+		this.fileName = fileName;
+		this.lastUpdated = lastUpdated;
+	}
 
 	public String getUserName() {
 		return userName;
