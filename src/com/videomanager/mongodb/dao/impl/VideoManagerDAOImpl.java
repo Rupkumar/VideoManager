@@ -10,7 +10,8 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSInputFile;
-import com.videomanager.model.VideoList;
+import com.videomanager.model.GetVideoResponse;
+import com.videomanager.model.VideoData;
 import com.videomanager.mongodb.dao.VideoManagerDAO;
 
 public class VideoManagerDAOImpl implements VideoManagerDAO {
@@ -35,7 +36,7 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 	}
 
 	@Override
-	public List<VideoList> getVideoListForUser(String userName) {
+	public GetVideoResponse getVideoListForUser(String userName) {
 		return null;
 	}
 	

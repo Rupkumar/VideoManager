@@ -5,8 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.videomanager.model.GetVideoResponse;
 import com.videomanager.model.SaveVideo;
-import com.videomanager.model.VideoList;
+import com.videomanager.model.VideoData;
 import com.videomanager.mongodb.dao.VideoManagerDAO;
 
 @Component
@@ -15,7 +16,7 @@ public class SimpleMongoDBManager implements MongoDBManager {
 	private VideoManagerDAO videoManagerDAO;
 	
 	@Override
-	public List<VideoList> getVideoListForUser(String username) {
+	public GetVideoResponse getVideoListForUser(String username) {
 		return videoManagerDAO.getVideoListForUser(username);
 	}
 

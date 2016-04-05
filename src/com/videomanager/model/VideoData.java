@@ -2,7 +2,7 @@ package com.videomanager.model;
 
 import java.sql.Date;
 
-public class VideoList {
+public class VideoData {
 
 	private String userName;
 	
@@ -55,7 +55,7 @@ public class VideoList {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		VideoList other = (VideoList) obj;
+		VideoData other = (VideoData) obj;
 		if (fileName == null) {
 			if (other.fileName != null)
 				return false;
