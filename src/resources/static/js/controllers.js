@@ -1,26 +1,21 @@
 (function(angular, _) {
-	angular.module("videoManager.controllers").controller("myVideosController", function($http, $scope, updateService, $rootScope, $log, $timeout, $interval) {
+	angular.module("videoManager.controllers").controller("myVideosController", function($http, $scope, updateService, $rootScope, $log, $location) {
 		
-		$scope.user = "rupkumar"
+		$scope.user = "rupkumar";
+		$scope.count = "";
 		$scope.responseTime = "";
 		$scope.model = {
-			myvideos: [],
+				videos: [],
 		}
-		
 
 		$scope.submit = function() {
-			console.log($scope.user);
+			console.log("user =" + $scope.user);
 			$http.get("/api/myvideos/" + $scope.user).then(function(response) {
-				$scope.model.myvideos = response.data.myvideos;
+				$scope.model.videos = response.data.videos;
+				$scope.count = response.data.videos.length;
 				$scope.responseTime = response.data.responseTime;
-				$scope.count = response.data.myvideos.length;
 			});
 		}
-		
-		$rootScope.$on("success", function(event, data) {
-			console.log(data);
-		})
-
 	});
 	
 	angular.module("videoManager.controllers").controller("headerController", function($scope, updateService, $rootScope, $log, $location) {

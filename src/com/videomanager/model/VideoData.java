@@ -1,6 +1,6 @@
 package com.videomanager.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class VideoData {
 

@@ -1,5 +1,6 @@
 package com.videomanager.mongodb.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +38,21 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 
 	@Override
 	public GetVideoResponse getVideoListForUser(String userName) {
-		return null;
+		long start = new Date().getTime();
+		List<VideoData> data = mockedData();
+		return new GetVideoResponse(data, 2L);
+	}
+	
+	private List<VideoData> mockedData() {
+		List<VideoData> list = new ArrayList<VideoData>();
+		for (int i=0; i< 10; i++) {
+			VideoData data = new VideoData();
+			data.setFileName("Video " + i);
+			data.setLastUpdated(new Date());
+			data.setUserName("rupkumar");
+			list.add(data);
+		}
+		return list;
 	}
 	
 	
