@@ -8,7 +8,7 @@ public class VideoData {
 	
 	private String fileName;
 	
-	private Date lastUpdated;
+	private String lastUpdated;
 
 	public String getUserName() {
 		return userName;
@@ -26,11 +26,11 @@ public class VideoData {
 		this.fileName = fileName;
 	}
 
-	public Date getLastUpdated() {
+	public String getLastUpdated() {
 		return lastUpdated;
 	}
 
-	public void setLastUpdated(Date lastUpdated) {
+	public void setLastUpdated(String lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
 

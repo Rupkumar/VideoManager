@@ -48,7 +48,7 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 		for (int i=0; i< 10; i++) {
 			VideoData data = new VideoData();
 			data.setFileName("Video " + i);
-			data.setLastUpdated(new Date());
+			data.setLastUpdated(new Date().toString());
 			data.setUserName("rupkumar");
 			list.add(data);
 		}
