@@ -9,6 +9,8 @@ public class SaveVideo {
 	private String fileName;
 	
 	private byte[] data;
+	
+	private boolean usePrivate;
 
 	public String getUserName() {
 		return userName;
@@ -34,6 +36,14 @@ public class SaveVideo {
 		this.data = data;
 	}
 
+	public boolean isUsePrivate() {
+		return usePrivate;
+	}
+
+	public void setUsePrivate(boolean usePrivate) {
+		this.usePrivate = usePrivate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -41,6 +51,7 @@ public class SaveVideo {
 		result = prime * result + Arrays.hashCode(data);
 		result = prime * result
 				+ ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result + (usePrivate ? 1231 : 1237);
 		result = prime * result
 				+ ((userName == null) ? 0 : userName.hashCode());
 		return result;
@@ -62,6 +73,8 @@ public class SaveVideo {
 				return false;
 		} else if (!fileName.equals(other.fileName))
 			return false;
+		if (usePrivate != other.usePrivate)
+			return false;
 		if (userName == null) {
 			if (other.userName != null)
 				return false;
@@ -73,7 +86,8 @@ public class SaveVideo {
 	@Override
 	public String toString() {
 		return "SaveVideo [userName=" + userName + ", fileName=" + fileName
-				+ "]";
+				+ ", data=" + Arrays.toString(data) + ", usePrivate="
+				+ usePrivate + "]";
 	}
 	
 	

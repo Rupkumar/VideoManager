@@ -1,14 +1,16 @@
 package com.videomanager.mongodb.dao;
 
-import java.util.List;
+import java.io.IOException;
 
-import com.videomanager.model.GetVideoResponse;
-import com.videomanager.model.VideoData;
+import com.videomanager.model.GetUserVideoListResponse;
+import com.videomanager.model.GetUserVideoResponse;
 
 
 public interface VideoManagerDAO {
 
 	void saveVideoForUser(String userName, String fileName, boolean privateFlag, byte[] video);
 	
-	GetVideoResponse getVideoListForUser(String userName);
+	GetUserVideoListResponse getVideoListForUser(String userName);
+	
+	GetUserVideoResponse getUserVideo(String videoFileName) throws IOException;
 }

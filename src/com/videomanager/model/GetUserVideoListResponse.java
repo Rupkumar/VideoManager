@@ -2,11 +2,11 @@ package com.videomanager.model;
 
 import java.util.List;
 
-public class GetVideoResponse {
+public class GetUserVideoListResponse {
 	private List<VideoData> videos;
 	 private Long responseTime;
 	 
-	 public GetVideoResponse(List<VideoData> videos, Long timeInMillSeconds) {
+	 public GetUserVideoListResponse(List<VideoData> videos, Long timeInMillSeconds) {
 		 this.videos = videos;
 		 this.responseTime = timeInMillSeconds;
 	 }

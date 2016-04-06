@@ -25,6 +25,8 @@
 		<script src="js/lib/lodash.js"></script>
 		<script src="js/lib/sock.js"></script>
 		<script src="js/lib/stomp.js"></script>
+		<script src="js/lib/ng-file-upload-shim.min.js"></script>
+		<script src="js/lib/ng-file-upload.min.js"></script>
 	</head>
 	<body>
 	
@@ -64,7 +66,10 @@
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
 					<li data-ng-class="{active : isActive('/myvideos')}">
-						<a href="#/myvideos">MyVideos</a>
+						<a href="#/myvideos">My Videos</a>
+					</li>
+					<li data-ng-class="{active : isActive('/uploadvideos')}">
+						<a href="#/uploadvideos">Upload Videos</a>
 					</li>
 				</ul>
 			</div>

@@ -10,13 +10,16 @@ public class VideoData {
 	
 	private String lastUpdated;
 	
+	private String localVideoFileName;
+	
 	public VideoData() {
 	}
 	
-	public VideoData(String userName, String fileName, String lastUpdated) {
+	public VideoData(String userName, String fileName, String lastUpdated, String localVideoFileName) {
 		this.userName = userName;
 		this.fileName = fileName;
 		this.lastUpdated = lastUpdated;
+		this.localVideoFileName = localVideoFileName;
 	}
 
 	public String getUserName() {
@@ -39,6 +42,14 @@ public class VideoData {
 		return lastUpdated;
 	}
 
+	public String getLocalVideoFileName() {
+		return localVideoFileName;
+	}
+
+	public void setLocalVideoFileName(String localVideoFileName) {
+		this.localVideoFileName = localVideoFileName;
+	}
+
 	public void setLastUpdated(String lastUpdated) {
 		this.lastUpdated = lastUpdated;
 	}
@@ -51,6 +62,10 @@ public class VideoData {
 				+ ((fileName == null) ? 0 : fileName.hashCode());
 		result = prime * result
 				+ ((lastUpdated == null) ? 0 : lastUpdated.hashCode());
+		result = prime
+				* result
+				+ ((localVideoFileName == null) ? 0 : localVideoFileName
+						.hashCode());
 		result = prime * result
 				+ ((userName == null) ? 0 : userName.hashCode());
 		return result;
@@ -75,6 +90,11 @@ public class VideoData {
 				return false;
 		} else if (!lastUpdated.equals(other.lastUpdated))
 			return false;
+		if (localVideoFileName == null) {
+			if (other.localVideoFileName != null)
+				return false;
+		} else if (!localVideoFileName.equals(other.localVideoFileName))
+			return false;
 		if (userName == null) {
 			if (other.userName != null)
 				return false;
@@ -85,8 +105,9 @@ public class VideoData {
 
 	@Override
 	public String toString() {
-		return "VideoList [userName=" + userName + ", fileName=" + fileName
-				+ ", lastUpdated=" + lastUpdated + "]";
+		return "VideoData [userName=" + userName + ", fileName=" + fileName
+				+ ", lastUpdated=" + lastUpdated + ", localVideoFileName="
+				+ localVideoFileName + "]";
 	}
 	
 	

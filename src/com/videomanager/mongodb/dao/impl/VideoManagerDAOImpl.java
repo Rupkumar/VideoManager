@@ -1,10 +1,15 @@
 package com.videomanager.mongodb.dao.impl;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,13 +19,14 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.MongoClient;
 import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-import com.videomanager.model.GetVideoResponse;
+import com.videomanager.model.GetUserVideoListResponse;
+import com.videomanager.model.GetUserVideoResponse;
 import com.videomanager.model.VideoData;
 import com.videomanager.mongodb.dao.VideoManagerDAO;
-import com.videomanager.web.controllers.RestAPIController;
 
 public class VideoManagerDAOImpl implements VideoManagerDAO {
 	
@@ -31,26 +37,39 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 	@Override
 	public void saveVideoForUser(String userName, String fileName,boolean privateFlag, byte[] video) {
 		DBCollection table = mongoDB.getCollection("userVideoList");
+		
+		String localVideoFileName = UUID.randomUUID().toString();
 		BasicDBObject document = new BasicDBObject();
 		document.put("userName", userName);
 		document.put("fileName", fileName);
 		document.put("createdOn", new Date());
 		document.put("privateFlag", privateFlag ? "Y" : "N");
+		document.put("videoFileName", localVideoFileName);
 		table.insert(document);
 		
 		GridFS gfsText = new GridFS(mongoDB, "userVideos");
     	GridFSInputFile gfsFile = gfsText.createFile(video);
-    	gfsFile.setFilename(fileName);
+    	gfsFile.setFilename(localVideoFileName);
     	gfsFile.save();
-    	System.out.println("Saved");
+    	LOG.info("Saved " + localVideoFileName);
+	}
+	
+	@Override
+	public GetUserVideoResponse getUserVideo(String videoFileName) throws IOException {
+		    	
+    	GridFS gfsText = new GridFS(mongoDB, "userVideos");
+    	GridFSDBFile imageForOutput = gfsText.findOne(videoFileName);
+    	ByteArrayOutputStream output = new ByteArrayOutputStream();
+    	imageForOutput.writeTo(output);
+    	return new GetUserVideoResponse(output.toByteArray());
 	}
 
 	@Override
-	public GetVideoResponse getVideoListForUser(String userName) {
+	public GetUserVideoListResponse getVideoListForUser(String userName) {
 		LOG.info("userName = " + userName);
 
 		if (userName == null || userName.isEmpty()) {
-			return new GetVideoResponse(null, 0L);
+			return new GetUserVideoListResponse(null, 0L);
 		}
 		
 		long start = new Date().getTime();
@@ -66,7 +85,7 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 		
 		long end = new Date().getTime() - start;
 		
-		return new GetVideoResponse(new ArrayList<VideoData>(videos), end);
+		return new GetUserVideoListResponse(new ArrayList<VideoData>(videos), end);
 		//return mockedData;
 	}
 	
@@ -77,13 +96,13 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 		while (cursor.hasNext()) {
 			BasicDBObject document = (BasicDBObject) cursor.next();
 			LOG.info("document = " + document);
-			VideoData data = new VideoData(document.getString("userName"), document.getString("fileName"), document.getDate("createdOn").toString());
+			VideoData data = new VideoData(document.getString("userName"), document.getString("fileName"), document.getDate("createdOn").toString(), document.getString("videoFileName"));
 			videos.add(data);
 		}
 		return videos;
 	}
 	
-	private GetVideoResponse mockedData() {
+	private GetUserVideoListResponse mockedData() {
 		List<VideoData> list = new ArrayList<VideoData>();
 		for (int i=0; i< 10; i++) {
 			VideoData data = new VideoData();
@@ -92,12 +111,30 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 			data.setUserName("rupkumar");
 			list.add(data);
 		}
-		return new GetVideoResponse(list, 2L);
+		return new GetUserVideoListResponse(list, 2L);
 	}
 	
 	
 	@Autowired
 	public void setMongoDB(DB mongoDB) {
 		this.mongoDB = mongoDB;
+	}
+	
+	public static void main(String... args) {
+		MongoClient mongoClient = new MongoClient("localhost", 27017);
+		DB mongoDB = mongoClient.getDB("videodb");
+		VideoManagerDAOImpl videoManagerDAOImpl = new VideoManagerDAOImpl();
+		videoManagerDAOImpl.setMongoDB(mongoDB);
+		try {
+			FileInputStream videoFile = new FileInputStream("C:\\Development\\Mongodb\\test\\Wildlife.wmv");
+			byte[] data = new byte[videoFile.available()];
+			videoFile.read(data);
+			videoFile.close();
+			videoManagerDAOImpl.saveVideoForUser("rupkumar", "TestVideo", false, data);
+		} catch (Exception e) {
+			System.out.print(e);
+		} finally{
+			mongoClient.close();
+		}
 	}
 }
