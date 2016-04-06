@@ -49,7 +49,7 @@ public class RestAPIController {
 					saveVideo.setUserName("rupkumar");
 					saveVideo.setData(file.getBytes());
 					saveVideo.setUsePrivate(false);
-					//mongoDBManager.saveVideoForUser(Arrays.asList(saveVideo));
+					mongoDBManager.saveVideoForUser(Arrays.asList(saveVideo));
 					LOG.info("Saved the file " + file.getOriginalFilename());
 				}
 				return null;

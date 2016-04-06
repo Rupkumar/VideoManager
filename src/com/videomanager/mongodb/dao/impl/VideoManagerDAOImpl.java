@@ -126,7 +126,7 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 		VideoManagerDAOImpl videoManagerDAOImpl = new VideoManagerDAOImpl();
 		videoManagerDAOImpl.setMongoDB(mongoDB);
 		try {
-			FileInputStream videoFile = new FileInputStream("C:\\Development\\Mongodb\\test\\Wildlife.wmv");
+			FileInputStream videoFile = new FileInputStream("C:\\temp\\Test.mp4");
 			byte[] data = new byte[videoFile.available()];
 			videoFile.read(data);
 			videoFile.close();
