@@ -1,9 +1,29 @@
 <div ng-controller="uploadVideosController">
+	<style>
+        #preview .thumbnail{
+            width:400px;
+            height: 400px;
+            float:left;
+            margin:2px;
+        }
+        #preview .thumbnail video{
+            width:400px;
+            height: 400px;
+        }
+
+    </style>
 	<h1 class="page-header">Upload Videos</h1>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="button" ngf-select="upload($file)" ngf-max-size="50MB">Upload on file select</div>
-			Video preview: <video controls ngf-src="file" width="320" height="240" autoplay></video>
+			<p>		
+				<input type="file" id="fileinput" multiple="multiple" ngf-select="upload($file)" ngf-max-size="50MB" accept="video/*"/>
+			</p>
+			<div>
+				<h2 id="filename"></h2>
+				<p id="filetype"></p>
+				<p id="filesize"></p>
+			</div>
+			<div id="preview"></div>
 		</div>
 	</div>
 </div>

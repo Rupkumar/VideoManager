@@ -29,6 +29,7 @@
 
 	    // upload on file select or drop
 	    $scope.upload = function (file) {
+	    	previewImage(file);
 	        Upload.upload({
 	            url: '/api/uploadvideos/',
 	            data: {file: file}
@@ -41,6 +42,48 @@
 	            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
 	        });
 	    };
+	    
+	    function previewImage(file) {
+	        var gallery = document.getElementById("preview");
+	        var videoType = /video.*/;
+	        if (!file.type.match(videoType)) {
+	            throw "File Type must be a video";
+	        }
+	        var filename = document.getElementById("filename");
+	        filename.innerHTML  = file.name
+	        document.getElementById("filetype").innerHTML= file.type
+	        document.getElementById("filesize").innerHTML= humanFileSize(file.size, "MB");
+
+	        var thumb = document.createElement("div");
+	        thumb.classList.add('thumbnail'); // Add the class thumbnail to the created div
+
+	        var img = document.createElement("video");
+	        img.file = file;
+	        thumb.appendChild(img);
+	        gallery.appendChild(thumb);
+
+	        // Using FileReader to display the image content
+	        var reader = new FileReader();
+	        reader.onload = (function(aImg) { 
+	        	return function(e) { 
+	        		aImg.src = e.target.result; 
+	        		aImg.controls=true
+	        	}; 
+	        })(img);
+	        reader.readAsDataURL(file);
+	    }
+	    
+	    function humanFileSize(bytes, si) {
+	        var thresh = si ? 1000 : 1024;
+	        if(bytes < thresh) return bytes + ' B';
+	        var units = si ? ['kB','MB','GB','TB','PB','EB','ZB','YB'] : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+	        var u = -1;
+	        do {
+	            bytes /= thresh;
+	            ++u;
+	        } while(bytes >= thresh);
+	        return bytes.toFixed(1)+' '+units[u];
+	    }
 	});
 	
 	angular.module("videoManager.controllers").controller("headerController", function($scope, updateService, $rootScope, $log, $location) {
