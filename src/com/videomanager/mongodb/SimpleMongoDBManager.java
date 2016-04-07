@@ -17,8 +17,8 @@ public class SimpleMongoDBManager implements MongoDBManager {
 	private VideoManagerDAO videoManagerDAO;
 	
 	@Override
-	public GetUserVideoListResponse getVideoListForUser(String username) {
-		return videoManagerDAO.getVideoListForUser(username);
+	public GetUserVideoListResponse getVideoListForUser(String username, boolean inclVideo) {
+		return videoManagerDAO.getVideoListForUser(username, inclVideo);
 	}
 
 	@Override

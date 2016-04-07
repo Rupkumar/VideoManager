@@ -12,6 +12,9 @@
 		}).when('/uploadvideos', {
             templateUrl : 'partials/uploadvideos.html',
             controller  : 'uploadVideosController'
+		}).when('/showvideos', {
+            templateUrl : 'partials/showvideos.html',
+            controller  : 'uploadVideosController'            	
         }).when('/myvideos', {
             templateUrl : 'partials/myvideos.html',
             controller  : 'myVideosController'

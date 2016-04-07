@@ -56,16 +56,11 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 	
 	@Override
 	public GetUserVideoResponse getUserVideo(String videoFileName) throws IOException {
-		    	
-    	GridFS gfsText = new GridFS(mongoDB, "userVideos");
-    	GridFSDBFile imageForOutput = gfsText.findOne(videoFileName);
-    	ByteArrayOutputStream output = new ByteArrayOutputStream();
-    	imageForOutput.writeTo(output);
-    	return new GetUserVideoResponse(output.toByteArray());
+    	return new GetUserVideoResponse(getVideo(videoFileName));
 	}
 
 	@Override
-	public GetUserVideoListResponse getVideoListForUser(String userName) {
+	public GetUserVideoListResponse getVideoListForUser(String userName, boolean inclVideo) {
 		LOG.info("userName = " + userName);
 
 		if (userName == null || userName.isEmpty()) {
@@ -96,10 +91,24 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 		while (cursor.hasNext()) {
 			BasicDBObject document = (BasicDBObject) cursor.next();
 			LOG.info("document = " + document);
-			VideoData data = new VideoData(document.getString("userName"), document.getString("fileName"), document.getDate("createdOn").toString(), document.getString("videoFileName"));
+			String videoFileName = document.getString("videoFileName");
+			VideoData data = new VideoData(document.getString("userName"), document.getString("fileName"), document.getDate("createdOn").toString(), videoFileName);
+			data.setVideoData(getVideo(videoFileName));
 			videos.add(data);
 		}
 		return videos;
+	}
+	
+	private byte[] getVideo(String videoFileName) {
+		GridFS gfsText = new GridFS(mongoDB, "userVideos");
+    	GridFSDBFile imageForOutput = gfsText.findOne(videoFileName);
+    	ByteArrayOutputStream output = new ByteArrayOutputStream();
+    	try {
+    		imageForOutput.writeTo(output);
+    	} catch (Exception e) {
+    		LOG.error("Failed to fetch the video " + e);
+    	}
+    	return output.toByteArray();
 	}
 	
 	private GetUserVideoListResponse mockedData() {
