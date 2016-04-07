@@ -44,14 +44,15 @@
 	    };
 	    
 	    function previewImage(file) {
-	        var galleryId = "gallery";
-
-	        var gallery = document.getElementById(galleryId);
+	        var gallery = document.getElementById("preview");
 	        var videoType = /video.*/;
-
 	        if (!file.type.match(videoType)) {
 	            throw "File Type must be a video";
 	        }
+	        var filename = document.getElementById("filename");
+	        filename.innerHTML  = file.name
+	        document.getElementById("filetype").innerHTML= file.type
+	        document.getElementById("filesize").innerHTML= humanFileSize(file.size, "MB");
 
 	        var thumb = document.createElement("div");
 	        thumb.classList.add('thumbnail'); // Add the class thumbnail to the created div
@@ -70,6 +71,18 @@
 	        	}; 
 	        })(img);
 	        reader.readAsDataURL(file);
+	    }
+	    
+	    function humanFileSize(bytes, si) {
+	        var thresh = si ? 1000 : 1024;
+	        if(bytes < thresh) return bytes + ' B';
+	        var units = si ? ['kB','MB','GB','TB','PB','EB','ZB','YB'] : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+	        var u = -1;
+	        do {
+	            bytes /= thresh;
+	            ++u;
+	        } while(bytes >= thresh);
+	        return bytes.toFixed(1)+' '+units[u];
 	    }
 	});
 	
