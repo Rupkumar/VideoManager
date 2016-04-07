@@ -9,7 +9,7 @@ import com.videomanager.model.SaveVideo;
 
 public interface MongoDBManager {
 
-	public GetUserVideoListResponse getVideoListForUser(String username);
+	public GetUserVideoListResponse getVideoListForUser(String username, boolean inclVideo);
 	
 	public void saveVideoForUser(List<SaveVideo> videos);
 	

@@ -1,6 +1,6 @@
 package com.videomanager.model;
 
-import java.util.Date;
+import java.util.Arrays;
 
 public class VideoData {
 
@@ -12,6 +12,8 @@ public class VideoData {
 	
 	private String localVideoFileName;
 	
+	private byte[] videoData;
+	
 	public VideoData() {
 	}
 	
@@ -20,6 +22,14 @@ public class VideoData {
 		this.fileName = fileName;
 		this.lastUpdated = lastUpdated;
 		this.localVideoFileName = localVideoFileName;
+	}
+	
+	public VideoData(String userName, String fileName, String lastUpdated, String localVideoFileName, byte[] videoData) {
+		this.userName = userName;
+		this.fileName = fileName;
+		this.lastUpdated = lastUpdated;
+		this.localVideoFileName = localVideoFileName;
+		this.videoData = videoData;
 	}
 
 	public String getUserName() {
@@ -58,16 +68,10 @@ public class VideoData {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((fileName == null) ? 0 : fileName.hashCode());
-		result = prime * result
-				+ ((lastUpdated == null) ? 0 : lastUpdated.hashCode());
-		result = prime
-				* result
-				+ ((localVideoFileName == null) ? 0 : localVideoFileName
-						.hashCode());
-		result = prime * result
-				+ ((userName == null) ? 0 : userName.hashCode());
+		result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
+		result = prime * result + ((lastUpdated == null) ? 0 : lastUpdated.hashCode());
+		result = prime * result + ((localVideoFileName == null) ? 0 : localVideoFileName.hashCode());
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
 
@@ -101,6 +105,14 @@ public class VideoData {
 		} else if (!userName.equals(other.userName))
 			return false;
 		return true;
+	}
+
+	public byte[] getVideoData() {
+		return videoData;
+	}
+
+	public void setVideoData(byte[] videoData) {
+		this.videoData = videoData;
 	}
 
 	@Override

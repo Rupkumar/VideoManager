@@ -25,11 +25,23 @@ public class RestAPIController {
 	private static final Log LOG = LogFactory.getLog(RestAPIController.class);
 
 	@RequestMapping("/api/myvideos/{user}")
+	public Callable<GetUserVideoListResponse> getUserVideoList(@PathVariable String user) {
+		return new Callable<GetUserVideoListResponse>() {
+			@Override
+			public GetUserVideoListResponse call() throws Exception {
+				GetUserVideoListResponse response = mongoDBManager.getVideoListForUser(user, false);
+				LOG.info("Recieved videoList from Services: " + response);
+				return response;
+			}
+		};
+	}
+	
+	@RequestMapping("/api/showvideos/{user}")
 	public Callable<GetUserVideoListResponse> getUserVideos(@PathVariable String user) {
 		return new Callable<GetUserVideoListResponse>() {
 			@Override
 			public GetUserVideoListResponse call() throws Exception {
-				GetUserVideoListResponse response = mongoDBManager.getVideoListForUser(user);
+				GetUserVideoListResponse response = mongoDBManager.getVideoListForUser(user, true);
 				LOG.info("Recieved videoList from Services: " + response);
 				return response;
 			}
