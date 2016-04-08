@@ -92,9 +92,11 @@ public class VideoManagerDAOImpl implements VideoManagerDAO {
 			BasicDBObject document = (BasicDBObject) cursor.next();
 			LOG.info("document = " + document);
 			String videoFileName = document.getString("videoFileName");
-			VideoData data = new VideoData(document.getString("userName"), document.getString("fileName"), document.getDate("createdOn").toString(), videoFileName);
-			data.setVideoData(getVideo(videoFileName));
-			videos.add(data);
+			if (videoFileName != null) {
+				VideoData data = new VideoData(document.getString("userName"), document.getString("fileName"), document.getDate("createdOn").toString(), videoFileName);
+				data.setVideoData(getVideo(videoFileName));
+				videos.add(data);
+			}
 		}
 		return videos;
 	}

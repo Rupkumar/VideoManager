@@ -30,44 +30,26 @@
 		$scope.submit = function() {
 			console.log("user =" + $scope.user);
 			$http.get("/api/showvideos/" + $scope.user).then(function(response) {
-				for(int i=0; response.data.videos.length; i++) {
-					
+				for(i=0; i < response.data.videos.length; i++) {
+					videoList(response.data.videos[i].localVideoFileName)
 				}
 			});
 		}
 	});
 	
-	function videoList(file) {
+	function videoList(videoFileName) {
         var gallery = document.getElementById("showVideos");
         var videoType = /video.*/;
-        if (!file.type.match(videoType)) {
-            throw "File Type must be a video";
-        }
-        var filename = document.getElementById("filename");
-        filename.innerHTML  = file.name
-        document.getElementById("filetype").innerHTML= file.type
-        document.getElementById("filesize").innerHTML= humanFileSize(file.size, "MB");
-
         var thumb = document.createElement("div");
-        thumb.classList.add('thumbnail'); // Add the class thumbnail to the created div
-
         var video = document.createElement("video");
-        video.file = file;
-        video.type = file.type;
+        video.type = videoType;
+        video.src ="http://localhost:8090/api/view/" + videoFileName;
+        video.src ="http://v2v.cc/~j/theora_testsuite/320x240.ogg";
         video.style="width:100%"
+        video.controls=true;
+        video.preload="metadata";
         thumb.appendChild(video);
         gallery.appendChild(thumb);
-
-        // Using FileReader to display the image content
-        var reader = new FileReader();
-        reader.onload = (function(aImg) { 
-        	return function(e) { 
-        		aImg.src = e.target.result; 
-        		aImg.controls=true;
-        		aImg.preload="metadata";
-        	}; 
-        })(video);
-        reader.readAsDataURL(file);
     }
 	
 	angular.module("videoManager.controllers").controller("uploadVideosController", function($http, $scope, Upload, updateService, $rootScope, $log, $location) {
