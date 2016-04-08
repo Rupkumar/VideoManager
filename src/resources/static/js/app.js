@@ -7,11 +7,11 @@
 	angular.module("videoManager").config(function($routeProvider) {
 		$routeProvider.when('/', {     
 			redirectTo: function () {
-				return "/myvideos";
+				return "/showvideos";
 			}
 		}).when('/uploadvideos', {
             templateUrl : 'partials/uploadvideos.html',
-            controller  : 'uploadVideosController'
+            controller  : 'uploadVideosController'            	
 		}).when('/showvideos', {
             templateUrl : 'partials/showvideos.html',
             controller  : 'uploadVideosController'            	

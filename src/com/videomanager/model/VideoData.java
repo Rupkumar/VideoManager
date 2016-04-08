@@ -1,37 +1,32 @@
 package com.videomanager.model;
 
-import java.util.Arrays;
 
 public class VideoData {
 
 	private String userName;
 	
+	private boolean privateFlag;
+	
 	private String fileName;
+	
+	private String contenType;
 	
 	private String lastUpdated;
 	
 	private String localVideoFileName;
 	
-	private byte[] videoData;
-	
 	public VideoData() {
 	}
 	
-	public VideoData(String userName, String fileName, String lastUpdated, String localVideoFileName) {
+	public VideoData(String userName, boolean privateFlag, String fileName, String contentType, String lastUpdated, String localVideoFileName) {
 		this.userName = userName;
+		this.privateFlag = privateFlag;
 		this.fileName = fileName;
+		this.contenType = contentType;
 		this.lastUpdated = lastUpdated;
 		this.localVideoFileName = localVideoFileName;
 	}
 	
-	public VideoData(String userName, String fileName, String lastUpdated, String localVideoFileName, byte[] videoData) {
-		this.userName = userName;
-		this.fileName = fileName;
-		this.lastUpdated = lastUpdated;
-		this.localVideoFileName = localVideoFileName;
-		this.videoData = videoData;
-	}
-
 	public String getUserName() {
 		return userName;
 	}
@@ -64,13 +59,38 @@ public class VideoData {
 		this.lastUpdated = lastUpdated;
 	}
 
+	public boolean isPrivateFlag() {
+		return privateFlag;
+	}
+
+	public void setPrivateFlag(boolean privateFlag) {
+		this.privateFlag = privateFlag;
+	}
+
+	public String getContenType() {
+		return contenType;
+	}
+
+	public void setContenType(String contenType) {
+		this.contenType = contenType;
+	}
+
+	@Override
+	public String toString() {
+		return "VideoData [userName=" + userName + ", privateFlag=" + privateFlag + ", fileName=" + fileName
+				+ ", contenType=" + contenType + ", lastUpdated=" + lastUpdated + ", localVideoFileName="
+				+ localVideoFileName + "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((contenType == null) ? 0 : contenType.hashCode());
 		result = prime * result + ((fileName == null) ? 0 : fileName.hashCode());
 		result = prime * result + ((lastUpdated == null) ? 0 : lastUpdated.hashCode());
 		result = prime * result + ((localVideoFileName == null) ? 0 : localVideoFileName.hashCode());
+		result = prime * result + (privateFlag ? 1231 : 1237);
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		return result;
 	}
@@ -84,6 +104,11 @@ public class VideoData {
 		if (getClass() != obj.getClass())
 			return false;
 		VideoData other = (VideoData) obj;
+		if (contenType == null) {
+			if (other.contenType != null)
+				return false;
+		} else if (!contenType.equals(other.contenType))
+			return false;
 		if (fileName == null) {
 			if (other.fileName != null)
 				return false;
@@ -99,6 +124,8 @@ public class VideoData {
 				return false;
 		} else if (!localVideoFileName.equals(other.localVideoFileName))
 			return false;
+		if (privateFlag != other.privateFlag)
+			return false;
 		if (userName == null) {
 			if (other.userName != null)
 				return false;
@@ -106,22 +133,5 @@ public class VideoData {
 			return false;
 		return true;
 	}
-
-	public byte[] getVideoData() {
-		return videoData;
-	}
-
-	public void setVideoData(byte[] videoData) {
-		this.videoData = videoData;
-	}
-
-	@Override
-	public String toString() {
-		return "VideoData [userName=" + userName + ", fileName=" + fileName
-				+ ", lastUpdated=" + lastUpdated + ", localVideoFileName="
-				+ localVideoFileName + "]";
-	}
-	
-	
 	
 }

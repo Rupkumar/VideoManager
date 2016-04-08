@@ -2,15 +2,17 @@ package com.videomanager.mongodb.dao;
 
 import java.io.IOException;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.mongodb.gridfs.GridFSDBFile;
 import com.videomanager.model.GetUserVideoListResponse;
-import com.videomanager.model.GetUserVideoResponse;
 
 
 public interface VideoManagerDAO {
 
-	void saveVideoForUser(String userName, String fileName, boolean privateFlag, byte[] video);
+	void saveVideoForUser(String userName, boolean privateFlag, MultipartFile file) throws IOException;
 	
-	GetUserVideoListResponse getVideoListForUser(String userName, boolean inclVideo);
+	GetUserVideoListResponse getVideoListForUser(String userName, boolean includeOthersPublic);
 	
-	GetUserVideoResponse getUserVideo(String videoFileName) throws IOException;
+	GridFSDBFile getVideoFile(String videoFileName);
 }

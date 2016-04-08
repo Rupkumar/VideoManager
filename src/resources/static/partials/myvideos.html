@@ -1,8 +1,8 @@
 <div ng-controller="myVideosController" ng-init="submit()">
-	<h1 class="page-header">My Videos</h1>
+	<h1 class="page-header">Video List</h1>
 	<div class="row">
 		<div class="col-md-12">
-			<div>
+			<div ng-show="responseTime != 0">
 				<div class="alert alert-success alert-dismissible" role="alert">
 					<button type="button" class="close" data-dismiss="alert"
 						aria-label="Close">
@@ -22,9 +22,11 @@
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane active" id="table">
 						<hot-table datarows="model.videos" width="600" stretch-h sort-indicator column-sorting>
-							<hot-column data="fileName" title="'Video Name'"></hot-column>
-							<hot-column data="userName" title="'User'"></hot-column> 
-							<hot-column data="lastUpdated" title="'Uploaded Date'"></hot-column>
+							<hot-column data="userName" title="'User'" readOnly></hot-column>
+							<hot-column data="fileName" title="'Video Name'" readOnly></hot-column>
+							 <hot-column data="contenType" title="'Content Type'" readOnly></hot-column>
+							 <hot-column type="'checkbox'" data="privateFlag" title="'Private'" checkedTemplate="'Yes'" uncheckedTemplate="'No'" readOnly></hot-column>
+							<hot-column data="lastUpdated" title="'Uploaded Date'" readOnly></hot-column>
 						</hot-table>
 					</div>
 				</div>

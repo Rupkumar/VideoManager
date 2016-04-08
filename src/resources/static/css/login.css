@@ -1,0 +1,11 @@
+.jumbotron {
+    background-color: #456d9f;
+    color: #fff;
+
+}
+body {
+    background-color: #eee;
+}
+.btn btn-primary {
+    width: 70px;
+}

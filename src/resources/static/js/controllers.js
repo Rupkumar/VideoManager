@@ -30,26 +30,51 @@
 		$scope.submit = function() {
 			console.log("user =" + $scope.user);
 			$http.get("/api/showvideos/" + $scope.user).then(function(response) {
-				for(i=0; i < response.data.videos.length; i++) {
-					videoList(response.data.videos[i].localVideoFileName)
+				$scope.responseTime = response.data.responseTime;
+				var len = response.data.videos.length;
+				if (len < 1) {
+					return;
+				}
+				var showvideos = document.getElementById("showVideos");
+				var videoCount = 4;
+				for(i=0; i<len; i++) {
+					videoCount++;
+					var rowDiv;
+					if (videoCount > 4) {
+						var parentDiv = document.createElement("div");
+						parentDiv.setAttribute("class", "container-fluid bg-3 text-center");
+						rowDiv = document.createElement("div");
+						rowDiv.setAttribute("class", "row");
+						parentDiv.appendChild(rowDiv);
+						showvideos.appendChild(parentDiv);
+						videoCount=1;
+					}
+					showVideo(response.data.videos[i], rowDiv);
 				}
 			});
 		}
 	});
 	
-	function videoList(videoFileName) {
-        var gallery = document.getElementById("showVideos");
-        var videoType = /video.*/;
-        var thumb = document.createElement("div");
+	function showVideo(videoData, rowDiv) {
+        var div = document.createElement("div");
+        div.setAttribute("class", "col-sm-3");
+        var para = document.createElement("p");
+        var node = document.createTextNode(videoData.fileName);
+        para.appendChild(node);
+        div.appendChild(para);
+        var para2 = document.createElement("p");
+        var node2 = document.createTextNode(videoData.lastUpdated);
+        para2.appendChild(node2);
+        div.appendChild(para2);
         var video = document.createElement("video");
-        video.type = videoType;
-        video.src ="http://localhost:8090/api/view/" + videoFileName;
-        video.src ="http://v2v.cc/~j/theora_testsuite/320x240.ogg";
-        video.style="width:100%"
-        video.controls=true;
+        video.setAttribute("class", "img-responsive");
+        video.style="width:100%";
+        video.controls=true;        	
+        video.type = videoData.contenType;
+        video.src ="http://localhost:8090/api/video/" + videoData.localVideoFileName;
         video.preload="metadata";
-        thumb.appendChild(video);
-        gallery.appendChild(thumb);
+        div.appendChild(video);
+        rowDiv.appendChild(div);
     }
 	
 	angular.module("videoManager.controllers").controller("uploadVideosController", function($http, $scope, Upload, updateService, $rootScope, $log, $location) {
@@ -60,8 +85,26 @@
 	        $scope.upload($scope.file);
 	      }
 	    };
+	    
+	    $scope.uploadFiles = function (files) {
+	    	if (files && files.length) {
+	    		for (var i = 0; i < files.length; i++) {
+	    			previewImage(files[i]);
+	    	        Upload.upload({
+	    	            url: '/api/uploadvideos/',
+	    	            data: {file: files[i]}
+	    	        }).then(function (resp) {
+	    	            console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
+	    	        }, function (resp) {
+	    	            console.log('Error status: ' + resp.status);
+	    	        }, function (evt) {
+	    	            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+	    	            console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+	    	        });
+	    		}
+	    	}
+	    }
 
-	    // upload on file select or drop
 	    $scope.upload = function (file) {
 	    	previewImage(file);
 	        Upload.upload({
@@ -83,14 +126,23 @@
 	        if (!file.type.match(videoType)) {
 	            throw "File Type must be a video";
 	        }
-	        var filename = document.getElementById("filename");
-	        filename.innerHTML  = file.name
-	        document.getElementById("filetype").innerHTML= file.type
-	        document.getElementById("filesize").innerHTML= humanFileSize(file.size, "MB");
 
 	        var thumb = document.createElement("div");
-	        thumb.classList.add('thumbnail'); // Add the class thumbnail to the created div
-
+	        thumb.classList.add('thumbnail');
+	        var h2 = document.createElement("h2");
+	        var node = document.createTextNode(file.name);
+	        h2.appendChild(node);
+	        thumb.appendChild(h2);
+	        var para2 = document.createElement("p");
+	        var node2 = document.createTextNode(file.type);
+	        para2.appendChild(node2);
+	        thumb.appendChild(para2);
+	        
+	        var para3 = document.createElement("p");
+	        var node3 = document.createTextNode(humanFileSize(file.size, "MB"));
+	        para3.appendChild(node3);
+	        thumb.appendChild(para3);
+	        
 	        var video = document.createElement("video");
 	        video.file = file;
 	        video.type = file.type;
